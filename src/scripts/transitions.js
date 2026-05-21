@@ -14,6 +14,7 @@ import { initNavScrollHide, destroyNavScrollHide } from './nav.js';
 import { initFormValidation, destroyFormValidation } from './form-validate.js';
 import { initCopyLink, destroyCopyLink } from './copy-link.js';
 import { initHubspot, destroyHubspot } from './hubspot.js';
+import { initNavBannerHeight, destroyNavBannerHeight } from './nav-banner.js';
 
 gsap.registerPlugin(CustomEase);
 if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
@@ -68,12 +69,14 @@ function initBeforeEnterFunctions(next) {
   destroyModals();
   destroyFormValidation();
   destroyHubspot();
+  destroyNavBannerHeight();
 }
 
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
   if (has('.nav'))                          initNavScrollHide(nextPage);
+  if (has('.nav-banner'))                   initNavBannerHeight(nextPage);
   if (has('[data-theme-toggle]'))           initThemeToggle(nextPage);
   if (has('details'))                       initAccordions(nextPage);
   if (has('[data-tabs-component]'))         initTabs(nextPage);
