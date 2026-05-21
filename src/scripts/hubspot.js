@@ -2,7 +2,9 @@
 // HUBSPOT EMBED
 // Attribute-driven HubSpot form embedding
 // Put data-hubspot="<form-id>" on any div
-// Configure portal + region once on <body data-hubspot-portal="..." data-hubspot-region="eu1|na1">
+// Configure portal + region site-wide via meta tags in Site Settings → Head Code:
+//   <meta name="hubspot-portal" content="146362921">
+//   <meta name="hubspot-region" content="eu1">
 // -----------------------------------------
 
 const DEFAULT_REGION = "eu1";
@@ -25,16 +27,20 @@ function loadHubspotScript(region) {
   });
 }
 
+function readMeta(name) {
+  return document.querySelector(`meta[name="${name}"]`)?.content || null;
+}
+
 export function initHubspot(scope) {
   scope = scope || document;
   const els = scope.querySelectorAll("[data-hubspot]");
   if (!els.length) return;
 
-  const portalId = document.body.getAttribute("data-hubspot-portal");
-  const region = document.body.getAttribute("data-hubspot-region") || DEFAULT_REGION;
+  const portalId = readMeta("hubspot-portal");
+  const region = readMeta("hubspot-region") || DEFAULT_REGION;
 
   if (!portalId) {
-    console.warn("[hubspot] Missing data-hubspot-portal on <body> — forms will not render.");
+    console.warn('[hubspot] Missing <meta name="hubspot-portal"> — forms will not render.');
     return;
   }
 
