@@ -13,6 +13,7 @@ import { initFontSizeDetect, initFooterYear, initSkipLink } from './utilities.js
 import { initNavScrollHide, destroyNavScrollHide } from './nav.js';
 import { initFormValidation, destroyFormValidation } from './form-validate.js';
 import { initCopyLink, destroyCopyLink } from './copy-link.js';
+import { initHubspot, destroyHubspot } from './hubspot.js';
 
 gsap.registerPlugin(CustomEase);
 if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
@@ -66,6 +67,7 @@ function initBeforeEnterFunctions(next) {
   destroyInlineVideos();
   destroyModals();
   destroyFormValidation();
+  destroyHubspot();
 }
 
 function initAfterEnterFunctions(next) {
@@ -79,6 +81,7 @@ function initAfterEnterFunctions(next) {
   if (has('[data-video]'))                  initInlineVideos(nextPage);
   if (has('dialog'))                        initModals(nextPage);
   if (has('[data-form-validate]'))          initFormValidation(nextPage);
+  if (has('[data-hubspot]'))                initHubspot(nextPage);
   if (has('[data-footer-year]'))            initFooterYear(nextPage);
 
   // Re-evaluate inline scripts inside the new container (Webflow embeds)
