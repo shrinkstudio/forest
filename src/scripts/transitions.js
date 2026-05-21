@@ -1,5 +1,5 @@
 // -----------------------------------------
-// TEMPLATE_PROJECT_NAME — PAGE TRANSITIONS
+// forest — PAGE TRANSITIONS
 // Barba.js + GSAP + Lenis
 // -----------------------------------------
 
@@ -35,8 +35,8 @@ const has = (s) => !!nextPage.querySelector(s);
 let staggerDefault = 0.05;
 let durationDefault = 0.6;
 
-CustomEase.create("TEMPLATE_CUSTOM_EASE_NAME", "TEMPLATE_CUSTOM_EASE_VALUE");
-gsap.defaults({ ease: "TEMPLATE_CUSTOM_EASE_NAME", duration: durationDefault });
+CustomEase.create("osmo", "0.625, 0.05, 0, 1");
+gsap.defaults({ ease: "osmo", duration: durationDefault });
 
 
 // -----------------------------------------
@@ -95,8 +95,8 @@ function initAfterEnterFunctions(next) {
 
 
 // -----------------------------------------
-// PAGE TRANSITIONS (Simple Fade)
-// Replace with project-specific animations
+// PAGE TRANSITIONS (Osmo curved wipe)
+// HTML + CSS provided in Webflow via Osmo cloneable
 // -----------------------------------------
 
 function runPageOnceAnimation(next) {
@@ -106,6 +106,13 @@ function runPageOnceAnimation(next) {
 }
 
 function runPageLeaveAnimation(current, next) {
+  const transitionWrap = document.querySelector("[data-transition-wrap]");
+  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
+  const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
+  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
+  const transitionLogo = transitionWrap.querySelector("[data-transition-logo]");
+  const transitionLogoPath = transitionWrap.querySelectorAll("path");
+
   const tl = gsap.timeline({
     onComplete: () => { current.remove(); }
   });
@@ -114,17 +121,51 @@ function runPageLeaveAnimation(current, next) {
     return tl.set(current, { autoAlpha: 0 });
   }
 
+  tl.set(transitionPanel, { autoAlpha: 1 }, 0);
+  tl.set(transitionPanelTop, { scaleY: 0, height: "15vw" }, 0);
+  tl.set(transitionPanelBottom, { scaleY: 1, height: "20vw" }, 0);
+  tl.set(transitionLogo, { autoAlpha: 1 });
+  tl.set(transitionLogoPath, { yPercent: 105 });
   tl.set(next, { autoAlpha: 0 }, 0);
 
-  tl.to(current, {
-    autoAlpha: 0,
-    duration: 0.4,
-  }, 0);
+  tl.fromTo(transitionPanel,
+    { yPercent: 0 },
+    { yPercent: -100, duration: 1 },
+    0
+  );
+
+  tl.fromTo(transitionPanelTop,
+    { scaleY: 0 },
+    { scaleY: 1, duration: 1 },
+    "<"
+  );
+
+  tl.fromTo(transitionLogoPath,
+    { yPercent: 105 },
+    {
+      yPercent: 0,
+      duration: 0.8,
+      ease: "expo.out",
+      stagger: { amount: 0.06 }
+    },
+    "<+=0.4"
+  );
+
+  tl.fromTo(current,
+    { y: "0vh" },
+    { y: "-15dvh", duration: 1 },
+    0
+  );
 
   return tl;
 }
 
 function runPageEnterAnimation(next) {
+  const transitionWrap = document.querySelector("[data-transition-wrap]");
+  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
+  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
+  const transitionLogoPath = transitionWrap.querySelectorAll("path");
+
   const tl = gsap.timeline();
 
   if (reducedMotion) {
@@ -134,10 +175,43 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
   }
 
-  tl.to(next, {
-    autoAlpha: 1,
-    duration: 0.4,
-  }, 0);
+  tl.add("startEnter", 1.35);
+
+  tl.set(next, { autoAlpha: 1 }, "startEnter");
+
+  tl.fromTo(transitionPanel,
+    { yPercent: -100 },
+    {
+      yPercent: -200,
+      duration: 1,
+      overwrite: "auto",
+      immediateRender: false
+    },
+    "startEnter"
+  );
+
+  tl.fromTo(transitionPanelBottom,
+    { scaleY: 1 },
+    { scaleY: 0, duration: 1 },
+    "<"
+  );
+
+  tl.set(transitionPanel, { autoAlpha: 0 }, ">");
+
+  tl.to(transitionLogoPath,
+    {
+      yPercent: -130,
+      duration: 1.2,
+      ease: "expo.inOut",
+      stagger: { amount: -0.06 }
+    },
+    "startEnter-=0.4"
+  );
+
+  tl.from(next,
+    { y: "25dvh", duration: 1 },
+    "startEnter"
+  );
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
@@ -247,7 +321,7 @@ function initLenis() {
     wheelMultiplier: 1.25,
   });
 
-  window.TEMPLATE_LENIS_GLOBAL = lenis;
+  window.__forestLenis = lenis;
 
   if (hasScrollTrigger) {
     lenis.on("scroll", ScrollTrigger.update);
