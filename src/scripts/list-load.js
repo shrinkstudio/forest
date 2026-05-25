@@ -94,13 +94,13 @@ function animateItems(items, staggerMs) {
     y: 0,
     duration: 1,
     stagger: staggerMs / 1000,
-    ease: 'steamhaus',
+    ease: 'osmo',
   });
 }
 
 function refreshLayout() {
   if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-  if (window.__steamhausLenis) window.__steamhausLenis.resize();
+  if (window.__forestLenis) window.__forestLenis.resize();
 }
 
 function initInstance(listEl, scope) {
