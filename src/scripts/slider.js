@@ -51,6 +51,10 @@ function getSwiperConfig(element) {
   config.grabCursor = grabCursor !== "false";
 
   const componentWrapper = element.closest('[data-slider="component"]');
+  if (!componentWrapper) {
+    console.warn('[slider] Missing parent [data-slider="component"] wrapper, skipping init.', element);
+    return null;
+  }
 
   const nextEl = componentWrapper.querySelector('[data-slider="next"]');
   const prevEl = componentWrapper.querySelector('[data-slider="previous"]');
@@ -135,6 +139,7 @@ function initializeSwiper(element, index) {
   try {
     processWebflowCMSLists(element);
     const config = getSwiperConfig(element);
+    if (!config) return; // getSwiperConfig returned null (missing wrapper) — already warned
     const swiper = new Swiper(element, config);
     element.swiperInstance = swiper;
     setupHeightCalculation(element, swiper);
