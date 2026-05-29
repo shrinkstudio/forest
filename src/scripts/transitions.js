@@ -10,7 +10,6 @@ import { initSliders, destroySliders } from './slider.js';
 import { initInlineVideos, destroyInlineVideos } from './inline-video.js';
 import { initModalDelegation, initModals, destroyModals } from './modal.js';
 import { initFontSizeDetect, initFooterYear, initSkipLink } from './utilities.js';
-import { initNavScrollHide, destroyNavScrollHide } from './nav.js';
 import { initFormValidation, destroyFormValidation } from './form-validate.js';
 import { initCopyLink, destroyCopyLink } from './copy-link.js';
 import { initHubspot, destroyHubspot } from './hubspot.js';
@@ -62,7 +61,6 @@ function initBeforeEnterFunctions(next) {
   nextPage = next || document;
 
   // Destroy old instances before new page enters
-  destroyNavScrollHide();
   destroyAccordions();
   destroyTabs();
   destroySliders();
@@ -77,7 +75,6 @@ function initBeforeEnterFunctions(next) {
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
-  if (has('.nav'))                          initNavScrollHide(nextPage);
   if (has('.nav-banner'))                   initNavBannerHeight(nextPage);
   if (has('[data-theme-toggle]'))           initThemeToggle(nextPage);
   if (has('details'))                       initAccordions(nextPage);
@@ -134,7 +131,7 @@ function runPageLeaveAnimation(current, next) {
   tl.set(transitionPanelTop, { scaleY: 0, height: "15vw" }, 0);
   tl.set(transitionPanelBottom, { scaleY: 1, height: "20vw" }, 0);
   tl.set(transitionLogo, { autoAlpha: 1 });
-  tl.set(transitionLogoPath, { yPercent: 105 });
+  tl.set(transitionLogoPath, { yPercent: 130 });
   tl.set(next, { autoAlpha: 0 }, 0);
 
   tl.fromTo(transitionPanel,
@@ -150,7 +147,7 @@ function runPageLeaveAnimation(current, next) {
   );
 
   tl.fromTo(transitionLogoPath,
-    { yPercent: 105 },
+    { yPercent: 130 },
     {
       yPercent: 0,
       duration: 0.8,
