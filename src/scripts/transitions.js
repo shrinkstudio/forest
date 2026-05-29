@@ -209,7 +209,7 @@ function runPageEnterAnimation(next) {
 
   tl.to(transitionLogoPath,
     {
-      yPercent: -130,
+      yPercent: -200,
       duration: 1.2,
       ease: "expo.inOut",
       stagger: { amount: -0.06 }
