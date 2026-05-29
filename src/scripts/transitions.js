@@ -342,7 +342,7 @@ function initLenis() {
 
 function resetPage(container) {
   window.scrollTo(0, 0);
-  gsap.set(container, { clearProps: "position,top,left,right,transform" });
+  gsap.set(container, { clearProps: "position,top,left,right,transform,translate,rotate,scale" });
 
   if (hasLenis) {
     lenis.resize();
