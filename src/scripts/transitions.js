@@ -131,7 +131,7 @@ function runPageLeaveAnimation(current, next) {
   tl.set(transitionPanelTop, { scaleY: 0, height: "15vw" }, 0);
   tl.set(transitionPanelBottom, { scaleY: 1, height: "20vw" }, 0);
   tl.set(transitionLogo, { autoAlpha: 1 });
-  tl.set(transitionLogoPath, { yPercent: 130 });
+  tl.set(transitionLogoPath, { yPercent: 200 });
   tl.set(next, { autoAlpha: 0 }, 0);
 
   tl.fromTo(transitionPanel,
@@ -147,7 +147,7 @@ function runPageLeaveAnimation(current, next) {
   );
 
   tl.fromTo(transitionLogoPath,
-    { yPercent: 130 },
+    { yPercent: 200 },
     {
       yPercent: 0,
       duration: 0.8,
@@ -162,6 +162,11 @@ function runPageLeaveAnimation(current, next) {
     { y: "-15dvh", duration: 1 },
     0
   );
+
+  // Speed up on mobile (~1.6x faster)
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    tl.timeScale(1.6);
+  }
 
   return tl;
 }
@@ -206,7 +211,7 @@ function runPageEnterAnimation(next) {
 
   tl.to(transitionLogoPath,
     {
-      yPercent: -200,
+      yPercent: -300,
       duration: 1.2,
       ease: "expo.inOut",
       stagger: { amount: -0.06 }
@@ -221,6 +226,11 @@ function runPageEnterAnimation(next) {
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
+
+  // Speed up on mobile (~1.6x faster)
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    tl.timeScale(1.6);
+  }
 
   return new Promise(resolve => {
     tl.call(resolve, null, "pageReady");
