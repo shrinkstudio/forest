@@ -10,25 +10,41 @@
 const DEFAULT_REGION = "eu1";
 
 let scriptLoaded = false;
+let scriptLoading = null;
 let loadedRegion = null;
 
 function loadHubspotScript(region) {
   if (scriptLoaded && loadedRegion === region) return Promise.resolve();
-  return new Promise((resolve, reject) => {
+  if (scriptLoading && loadedRegion === region) return scriptLoading;
+
+  loadedRegion = region;
+  scriptLoading = new Promise((resolve, reject) => {
     const s = document.createElement("script");
-    s.src = `//js-${region}.hsforms.net/forms/embed/v2.js`;
+    s.src = `https://js-${region}.hsforms.net/forms/embed/v2.js`;
+    s.async = true;
     s.onload = () => {
       scriptLoaded = true;
-      loadedRegion = region;
       resolve();
     };
-    s.onerror = reject;
+    s.onerror = (err) => {
+      scriptLoading = null;
+      reject(err);
+    };
     document.head.appendChild(s);
   });
+  return scriptLoading;
 }
 
 function readMeta(name) {
   return document.querySelector(`meta[name="${name}"]`)?.content || null;
+}
+
+// Start fetching the embed script on first page load so it's already cached
+// (and window.hbspt is ready) by the time a form-bearing page is reached.
+// Safe to call multiple times — loadHubspotScript() short-circuits.
+export function eagerLoadHubspot() {
+  const region = readMeta("hubspot-region") || DEFAULT_REGION;
+  loadHubspotScript(region).catch(() => { /* swallow — initHubspot will retry + warn */ });
 }
 
 export function initHubspot(scope) {

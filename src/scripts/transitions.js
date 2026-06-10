@@ -12,7 +12,7 @@ import { initModalDelegation, initModals, destroyModals } from './modal.js';
 import { initFontSizeDetect, initFooterYear, initSkipLink } from './utilities.js';
 import { initFormValidation, destroyFormValidation } from './form-validate.js';
 import { initCopyLink, destroyCopyLink } from './copy-link.js';
-import { initHubspot, destroyHubspot } from './hubspot.js';
+import { initHubspot, destroyHubspot, eagerLoadHubspot } from './hubspot.js';
 import { initNavBannerHeight, destroyNavBannerHeight } from './nav-banner.js';
 import { initListLoad, destroyListLoad } from './list-load.js';
 
@@ -55,6 +55,10 @@ function initOnceFunctions() {
   initFontSizeDetect();
   initSkipLink();
   initCopyLink();
+
+  // Eagerly fetch third-party embeds so they're cached + globals are ready
+  // by the time the user navigates to a page that uses them.
+  eagerLoadHubspot();
 }
 
 function initBeforeEnterFunctions(next) {
