@@ -133,6 +133,23 @@ function setupHeightCalculation(element, swiper) {
   swiper.on('slideChangeTransitionEnd', updateSliderHeight);
   swiper.on('touchEnd', updateSliderHeight);
   swiper.on('resize', updateSliderHeight);
+
+  // Re-measure when images inside slides finish loading. Critical for
+  // effect:fade sliders where slides are position:absolute — initial
+  // measure runs before images are decoded so the slider sticks at the
+  // collapsed height (the "slither" bug).
+  element.querySelectorAll('img').forEach(img => {
+    if (img.complete && img.naturalHeight > 0) return;
+    img.addEventListener('load', updateSliderHeight, { once: true });
+    img.addEventListener('error', updateSliderHeight, { once: true });
+  });
+
+  // Backstop for late content (CMS, fonts, lazy elements).
+  if (typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(updateSliderHeight);
+    element.querySelectorAll('.swiper-slide').forEach(slide => ro.observe(slide));
+    element._heightObserver = ro;
+  }
 }
 
 function initializeSwiper(element, index) {
@@ -187,6 +204,10 @@ export function initSliders(scope) {
 
 export function destroySliders() {
   instances.forEach((element) => {
+    if (element._heightObserver) {
+      element._heightObserver.disconnect();
+      delete element._heightObserver;
+    }
     if (element.swiperInstance) {
       element.swiperInstance.destroy(true, true);
       delete element.swiperInstance;
