@@ -150,15 +150,6 @@ function runPageEnterAnimation(next) {
     "startEnter"
   );
 
-  const heading = next.querySelector('h1');
-  if (heading) {
-    tl.fromTo(heading,
-      { yPercent: 25, autoAlpha: 0 },
-      { yPercent: 0, autoAlpha: 1, ease: "expo.out", duration: 1 },
-      "< 0.3"
-    );
-  }
-
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
 
@@ -211,37 +202,11 @@ barba.hooks.afterEnter(data => {
   }
 });
 
-// Pages that should swap instantly (no curved-wipe transition) when navigating
-// between any pair of them. Paths are normalised (trailing slash stripped).
-const INSTANT_PAIR = ["/", "/partnerships"];
-
-function isInstantPair(current, next) {
-  const norm = (p) => (p || "/").replace(/\/$/, "") || "/";
-  return (
-    INSTANT_PAIR.includes(norm(current.url.path)) &&
-    INSTANT_PAIR.includes(norm(next.url.path))
-  );
-}
-
 barba.init({
   debug: false,
   timeout: 7000,
   preventRunning: true,
   transitions: [
-    {
-      name: "instant-home-partnerships",
-      sync: true,
-      custom: ({ current, next }) => isInstantPair(current, next),
-
-      async leave(data) {
-        data.current.container.remove();
-      },
-
-      async enter(data) {
-        gsap.set(data.next.container, { autoAlpha: 1 });
-        resetPage(data.next.container);
-      }
-    },
     {
       name: "default",
       sync: true,
