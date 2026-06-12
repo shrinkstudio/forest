@@ -105,8 +105,7 @@ function initAfterEnterFunctions(next) {
 
 
 // -----------------------------------------
-// PAGE TRANSITIONS (Osmo curved wipe)
-// HTML + CSS provided in Webflow via Osmo cloneable
+// PAGE TRANSITIONS — Fade + H1 reveal
 // -----------------------------------------
 
 function runPageOnceAnimation(next) {
@@ -116,13 +115,6 @@ function runPageOnceAnimation(next) {
 }
 
 function runPageLeaveAnimation(current, next) {
-  const transitionWrap = document.querySelector("[data-transition-wrap]");
-  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
-  const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
-  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
-  const transitionLogo = transitionWrap.querySelector("[data-transition-logo]");
-  const transitionLogoPath = transitionWrap.querySelectorAll("path");
-
   const tl = gsap.timeline({
     onComplete: () => { current.remove(); }
   });
@@ -131,56 +123,16 @@ function runPageLeaveAnimation(current, next) {
     return tl.set(current, { autoAlpha: 0 });
   }
 
-  tl.set(transitionPanel, { autoAlpha: 1 }, 0);
-  tl.set(transitionPanelTop, { scaleY: 0, height: "15vw" }, 0);
-  tl.set(transitionPanelBottom, { scaleY: 1, height: "20vw" }, 0);
-  tl.set(transitionLogo, { autoAlpha: 1 });
-  tl.set(transitionLogoPath, { yPercent: 200 });
-  tl.set(next, { autoAlpha: 0 }, 0);
-
-  tl.fromTo(transitionPanel,
-    { yPercent: 0 },
-    { yPercent: -100, duration: 1 },
-    0
-  );
-
-  tl.fromTo(transitionPanelTop,
-    { scaleY: 0 },
-    { scaleY: 1, duration: 1 },
-    "<"
-  );
-
-  tl.fromTo(transitionLogoPath,
-    { yPercent: 200 },
-    {
-      yPercent: 0,
-      duration: 0.8,
-      ease: "expo.out",
-      stagger: { amount: 0.06 }
-    },
-    "<+=0.4"
-  );
-
-  tl.fromTo(current,
-    { y: "0vh" },
-    { y: "-15dvh", duration: 1 },
-    0
-  );
-
-  // Speed up on mobile (~1.6x faster)
-  if (window.matchMedia('(max-width: 767px)').matches) {
-    tl.timeScale(1.6);
-  }
+  tl.to(current, {
+    autoAlpha: 0,
+    ease: "power1.in",
+    duration: 0.5,
+  }, 0);
 
   return tl;
 }
 
 function runPageEnterAnimation(next) {
-  const transitionWrap = document.querySelector("[data-transition-wrap]");
-  const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
-  const transitionPanelBottom = transitionWrap.querySelector("[data-transition-panel-bottom]");
-  const transitionLogoPath = transitionWrap.querySelectorAll("path");
-
   const tl = gsap.timeline();
 
   if (reducedMotion) {
@@ -190,51 +142,25 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
   }
 
-  tl.add("startEnter", 1.35);
+  tl.add("startEnter", 0);
 
-  tl.set(next, { autoAlpha: 1 }, "startEnter");
-
-  tl.fromTo(transitionPanel,
-    { yPercent: -100 },
-    {
-      yPercent: -200,
-      duration: 1,
-      overwrite: "auto",
-      immediateRender: false
-    },
+  tl.fromTo(next,
+    { autoAlpha: 0 },
+    { autoAlpha: 1, ease: "power1.inOut", duration: 0.75 },
     "startEnter"
   );
 
-  tl.fromTo(transitionPanelBottom,
-    { scaleY: 1 },
-    { scaleY: 0, duration: 1 },
-    "<"
-  );
-
-  tl.set(transitionPanel, { autoAlpha: 0 }, ">");
-
-  tl.to(transitionLogoPath,
-    {
-      yPercent: -300,
-      duration: 1.2,
-      ease: "expo.inOut",
-      stagger: { amount: -0.06 }
-    },
-    "startEnter-=0.4"
-  );
-
-  tl.from(next,
-    { y: "25dvh", duration: 1 },
-    "startEnter"
-  );
+  const heading = next.querySelector('h1');
+  if (heading) {
+    tl.fromTo(heading,
+      { yPercent: 25, autoAlpha: 0 },
+      { yPercent: 0, autoAlpha: 1, ease: "expo.out", duration: 1 },
+      "< 0.3"
+    );
+  }
 
   tl.add("pageReady");
   tl.call(resetPage, [next], "pageReady");
-
-  // Speed up on mobile (~1.6x faster)
-  if (window.matchMedia('(max-width: 767px)').matches) {
-    tl.timeScale(1.6);
-  }
 
   return new Promise(resolve => {
     tl.call(resolve, null, "pageReady");
