@@ -1,0 +1,47 @@
+# Forest Bikes
+
+> Forest is London's homegrown shared ebike service — 20,000+ electric bikes across 19 London boroughs, powered by 100% zero-carbon energy. Rides start from £1. B Corp certified with a score of 99.
+
+Forest operates a sustainable, app-based shared ebike rental service for both individual riders and business partners. The consumer side covers casual rides, Cycle to Work salary-sacrifice schemes, and Virgin Red points integration. The partnerships side serves UK businesses through bike sponsorship, digital advertising, Business Subscriptions, and Cycle to Work programmes. Forest is a Series B venture-backed company headquartered in London.
+
+## About Forest
+
+- [Home](https://forest.bikes/): Forest's main site — what we do, how we ride, who we serve.
+- [How It Works](https://forest.bikes/how-it-works): Step-by-step guide to using Forest — downloading the app, finding bikes, riding safely, and parking properly across 19 London boroughs.
+- [Ethics & Sustainability](https://forest.bikes/ethics): Zero emissions since day one. How Forest refurbishes bikes, offsets emissions through local tree planting, and gives back to London. B Corp score: 99.
+- [Blog](https://forest.bikes/blog): News, rider stories, partnership announcements, and sustainability updates from inside Forest.
+
+## For Riders
+
+- [Virgin Red × Forest](https://forest.bikes/partnerships/digital-advertising/virgin-red-for-forest): Redeem Virgin Points on Forest rides, plus a 500 bonus points offer for the first 10 rides in three months.
+- [Forest Meal Deals](https://forest.bikes/partnerships/forest-meal-deals): Free Forest ride minutes when you grab a meal deal from partner cafés and food spots across London.
+
+## For Businesses — Partnerships overview
+
+- [Partnerships](https://forest.bikes/partnerships): Overview of Forest's four B2B offerings — Bike Sponsorship, Digital Advertising, Cycle to Work, and Bikes for Business. Reach London's most engaged riders.
+- [Contact Partnerships](https://forest.bikes/partnerships/contact): Get in touch with the Forest Partnerships team.
+
+## Cycle to Work
+
+- [Cycle to Work with Forest](https://forest.bikes/partnerships/cycle-to-work): Salary-sacrifice access to 20,000+ shared Forest ebikes. Save up to 47% on tax and NI.
+- [Cycle to Work Pricing](https://forest.bikes/partnerships/cycle-to-work/pricing): Breakdown of what employees save under salary sacrifice.
+- [Apply for Cycle to Work](https://forest.bikes/partnerships/cycle-to-work/application): Sign up your team for Cycle to Work with Forest.
+
+## Bikes for Business
+
+- [Bikes for Business](https://forest.bikes/partnerships/bikes-for-business): Forest ebikes for teams — Business Subscriptions and Cycle to Work in one place.
+- [Forest Business](https://forest.bikes/partnerships/bikes-for-business/forest-business): Give your team access to 20,000+ Forest ebikes across London. Single-dashboard admin.
+- [Business Subscriptions](https://forest.bikes/partnerships/bikes-for-business/business-subscriptions): On-demand Forest ebike access for your team. Central billing, easy seat management.
+- [Chestertons Case Study](https://forest.bikes/partnerships/bikes-for-business/chestertons-case-study): How Chestertons grew Forest rides from 216 to 959 a month with Business Subscriptions.
+- [Forest Discount Codes](https://forest.bikes/partnerships/bikes-for-business/codes): Active discount codes for Forest rides across London.
+
+## Digital Advertising
+
+- [Digital Advertising on Forest](https://forest.bikes/partnerships/digital-advertising): Reach Forest's 1.5M London riders through Journey Ads, Video Ads, Vouchers and Map Pins inside the Forest app.
+- [Digital Ads Case Studies](https://forest.bikes/partnerships/digital-advertising/case-studies): How brands like Plenish, Intrepid, and Stubble & Co reached Forest's London riders through in-app advertising.
+
+## Bike Sponsorship
+
+- [Bike Sponsorship](https://forest.bikes/partnerships/bike-sponsorship): Sponsor Forest ebikes and put your brand on London's streets. Highly visible, city-wide, measurable through in-app analytics.
+- [Bike Sponsorship Case Studies](https://forest.bikes/partnerships/bike-sponsorship/case-studies): How brands like Deliveroo, Octopus Energy, and umob have launched in London through Forest bike sponsorship campaigns.
+
