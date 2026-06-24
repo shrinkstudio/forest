@@ -1,4 +1,4 @@
-# Shrink Scripts (Barba)
+# Scripts (Barba)
 
 Webflow JS bundle boilerplate — **with Barba.js page transitions**.
 
