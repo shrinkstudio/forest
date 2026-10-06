@@ -118,6 +118,10 @@ function setupHeightCalculation(element, swiper) {
     const slides = element.querySelectorAll('.swiper-slide');
     if (slides.length === 0) return;
 
+    /* release our own pinned height first — slides are align-self:stretch,
+       so measuring against the old pin can never grow past it */
+    element.style.height = 'auto';
+
     let maxHeight = 0;
     slides.forEach(slide => {
       slide.style.height = 'auto';
