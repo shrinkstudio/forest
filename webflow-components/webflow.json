@@ -1,0 +1,10 @@
+{
+  "library": {
+    "name": "Forest Tools",
+    "components": [
+      "./src/**/*.webflow.@(ts|tsx|js|jsx)"
+    ],
+    "description": "Code components for the Forest site (Common Sense Quiz).",
+    "id": "forest-tools"
+  }
+}

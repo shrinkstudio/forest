@@ -1,0 +1,106 @@
+<!-- ========== Consent ========== -->
+<!-- Consent Mode defaults. Must run before Cookiebot and GTM. -->
+<script data-cookieconsent="ignore">
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500,
+  });
+  gtag('set', 'ads_data_redaction', true);
+</script>
+
+<!-- Cookiebot (manual blocking: gated scripts use type="text/plain" + data-cookieconsent) -->
+<script
+  id="Cookiebot"
+  src="https://consent.cookiebot.com/uc.js"
+  data-cbid="59a886b0-2c69-4e2a-ba60-a96270f485d1"
+  data-blockingmode="manual"
+></script>
+
+<!-- Google Tag Manager -->
+<script data-cookieconsent="ignore">
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-WH5QCVQC');
+</script>
+
+<!-- TikTok Pixel (marketing consent) -->
+<script type="text/plain" data-cookieconsent="marketing">
+  !function (w, d, t) {
+    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+  var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+  ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+    ttq.load('DA6PBSRC77U2R5U1KQT0');
+    ttq.page();
+  }(window, document, 'ttq');
+</script>
+
+<!-- HubSpot tracking (statistics consent) -->
+<script
+  type="text/plain"
+  data-cookieconsent="statistics"
+  id="hs-script-loader"
+  async
+  defer
+  src="https://js-eu1.hs-scripts.com/146362921.js"
+></script>
+
+<!-- ========== Vendor ========== -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/@barba/core@2.10.3/dist/barba.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11.2.10/swiper-bundle.min.js"></script>
+
+<!-- ========== HubSpot forms (used by bundle hubspot.js) ========== -->
+<meta name="hubspot-portal" content="146362921" />
+<meta name="hubspot-region" content="eu1" />
+<link rel="preconnect" href="https://js-eu1.hsforms.net" crossorigin />
+<link rel="preconnect" href="https://forms-eu1.hsforms.com" crossorigin />
+
+<!-- ========== Forest site bundle ========== -->
+<script defer src="https://assets.forest.bike/vendor/forest.17fc276b.min.js"></script>
+
+<!-- ========== Force light theme ========== -->
+<!-- TEMP until dark mode is finished or removed in Webflow. JS-only shim:
+     does not affect CSS prefers-color-scheme rules. -->
+<meta name="color-scheme" content="light" />
+<script>
+  (function () {
+    var o = window.matchMedia;
+    window.matchMedia = function (q) {
+      if (typeof q === 'string' && /prefers-color-scheme/i.test(q)) {
+        return {
+          matches: /light/i.test(q),
+          media: q,
+          onchange: null,
+          addListener: function () {},
+          removeListener: function () {},
+          addEventListener: function () {},
+          removeEventListener: function () {},
+          dispatchEvent: function () {
+            return false;
+          },
+        };
+      }
+      return o.call(window, q);
+    };
+  })();
+</script>

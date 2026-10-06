@@ -1,0 +1,27 @@
+{
+  "name": "forest-webflow-components",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Forest — Webflow Code Components (React, published via DevLink).",
+  "type": "module",
+  "scripts": {
+    "import": "webflow devlink import",
+    "bundle": "webflow devlink bundle",
+    "check": "tsc --noEmit",
+    "preview": "esbuild .preview/index.tsx --bundle --format=esm --jsx=automatic --outfile=.preview/bundle.js"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@webflow/data-types": "latest",
+    "@webflow/react": "latest",
+    "@webflow/webflow-cli": "latest",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "motion": "^14.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

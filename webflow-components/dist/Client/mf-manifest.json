@@ -1,0 +1,66 @@
+{
+  "id": "_ForestTools",
+  "name": "_ForestTools",
+  "metaData": {
+    "name": "_ForestTools",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "0.0.0",
+      "buildName": "forest-webflow-components"
+    },
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "",
+      "api": ""
+    },
+    "globalName": "_ForestTools",
+    "pluginVersion": "2.5.1",
+    "publicPath": "http://localhost/"
+  },
+  "shared": [],
+  "remotes": [],
+  "exposes": [
+    {
+      "id": "_ForestTools:@webflow_renderer",
+      "name": "@webflow_renderer",
+      "assets": {
+        "js": {
+          "sync": [
+            "319.js",
+            "__federation_expose_scope_webflow_renderer.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./@webflow_renderer"
+    },
+    {
+      "id": "_ForestTools:CommonSenseQuiz",
+      "name": "CommonSenseQuiz",
+      "assets": {
+        "js": {
+          "sync": [
+            "319.js",
+            "__federation_expose_CommonSenseQuiz.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CommonSenseQuiz"
+    }
+  ]
+}
