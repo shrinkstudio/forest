@@ -28,6 +28,7 @@ button { font: inherit; }
   position: relative;
   width: 100%;
   height: 100svh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-flow: column;
@@ -49,6 +50,7 @@ button { font: inherit; }
   min-width: min(60svh, 100%);
   max-width: 100%;
   height: 100svh;
+  height: 100dvh;
   background-color: var(--stage-green);
   display: flex;
   flex-flow: column;
@@ -698,6 +700,11 @@ button { font: inherit; }
   .question-buttons { gap: 44px; }
   .qs-btn-circle.small { width: 60px; height: 60px; }
   .qs-btn-circle.big { width: 150px; height: 150px; }
+}
+
+@media (max-width: 480px) {
+  .fb-heading { font-size: 40px; }
+  .fb-heading-sub { font-size: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

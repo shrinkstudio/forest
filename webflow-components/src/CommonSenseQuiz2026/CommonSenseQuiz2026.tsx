@@ -201,9 +201,11 @@ export function CommonSenseQuiz2026({
             <div className="fb-body is-haptik">{fb.body}</div>
             <input
               className="fb-input"
-              type="email"
+              type="text"
+              readOnly
+              inputMode="none"
               placeholder="this isn’t real stop pressing it"
-              aria-label="Email (joke field)"
+              aria-label="Not a real email field"
             />
             <div className="fb-note">*ur not actually banned, just try again.</div>
           </>
