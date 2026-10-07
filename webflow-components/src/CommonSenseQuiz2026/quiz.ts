@@ -12,15 +12,15 @@ const ASSET_BASE =
     ? '/assets'
     : 'https://cdn.jsdelivr.net/gh/shrinkstudio/forest@main/webflow-components/assets';
 
-const CDN = 'https://cdn.prod.website-files.com/6707bcb65af64c7288ddba74';
-
 export const ASSETS = {
-  /* patched local copy: old greens #046C4C swapped for #00845C */
+  /* 2026 sticker packs (client exports, rasters recompressed locally) */
   bgDesk: `${ASSET_BASE}/bg-desk.svg`,
+  bgPhone: `${ASSET_BASE}/bg-phone.svg`, // dedicated phone sticker pack (<768px)
   splashFull: `${ASSET_BASE}/splash-full.svg`, // entire splash frame (mobile)
   splashCluster: `${ASSET_BASE}/splash-forest.svg`, // sticker + forest pill (desktop/tablet)
-  csClub: `${CDN}/68fe6c409bfd4ed3a9d51d37_cs%20club.svg`,
-  endImg: `${CDN}/68ff9e969d4d95d4a080d41b_end-img.svg`,
+  /* intro/outro clusters with the forest pill below (client exports) */
+  csClub: `${ASSET_BASE}/do-you-have-cs.svg`,
+  endImg: `${ASSET_BASE}/you-have-cs.svg`,
   trafficLight: `${ASSET_BASE}/traffic-light.svg`, // composed from Q1-Forest parts
   soundOn: `${ASSET_BASE}/sound-on.svg`, // client-supplied
   trumpetImg: `${ASSET_BASE}/trumpet.png`,
@@ -30,7 +30,7 @@ export const ASSETS = {
   /* Exported from Figma (nodes 5948:600 / 5948:617) — local preview paths;
      re-upload to the merger site's assets before publish. */
   zebraCrossing: `${ASSET_BASE}/zebra-crossing.png`,
-  zebraStill: `${ASSET_BASE}/zebra-still.png`, // hi-res question still (frame 5976-473)
+  zebraStill: `${ASSET_BASE}/zebra-still.jpg`, // question still (frame 5976-473), grey export margin cropped
   zebraAngry: `${ASSET_BASE}/zebra-angry.png`,
   /* PLACEHOLDERS — still to export from Figma: */
   zebraWink: '', // winking zebra face (correct, frame 2)
@@ -44,6 +44,7 @@ export const ASSETS = {
   zebraCorrectVideo: `${ASSET_BASE}/zebra-correct.mp4`,
   zebraWrongVideo: `${ASSET_BASE}/zebra-wrong.mp4`,
   ferdiVideo: `${ASSET_BASE}/ferdi.mp4`,
+  roadmanVideo: `${ASSET_BASE}/roadman.mp4`,
 } as const;
 
 export interface Option26 {
@@ -140,9 +141,8 @@ export const QUESTIONS: Question26[] = [
       heading: 'CORRECT',
       headingTone: 'green',
       body: 'Be a roadman, not a pavementboy.',
-      note: 'We struggled with this one if you couldn’t tell.',
       btnLabel: 'continue',
-      img: ASSETS.cycleLane,
+      video: ASSETS.roadmanVideo,
       flair: 'none',
     },
     wrong: {

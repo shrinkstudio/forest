@@ -44,6 +44,10 @@ button { font: inherit; }
   background-repeat: no-repeat;
   background-size: cover;
 }
+/* phone sticker pack (its own frame, not a crop of the desktop one) */
+@media (max-width: 767px) {
+  .csq26 { background-image: url("__BGM__"); }
+}
 
 .stage {
   width: 60svh;
@@ -111,7 +115,7 @@ button { font: inherit; }
   text-transform: uppercase;
   text-align: center;
 }
-.h1 .sup { font-size: 0.38em; vertical-align: 0.85em; }
+.h1 .sup { font-size: 0.38em; vertical-align: 1.25em; }
 .entry-title { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; }
 .entry-note { color: var(--white); margin-top: 14px; text-align: center; font-size: min(2.6svh, 4.3vw); font-size: 4.3cqw; }
 .sticker-btn {
@@ -195,6 +199,10 @@ button { font: inherit; }
   height: 100%;
   transition: width 0.6s var(--ease);
 }
+
+/* the quiz stage starts below the absolute progress header; "safe" falls back
+   to top-aligned instead of sliding under it when a short viewport overflows */
+.stage.is-quiz { padding-top: clamp(100px, 13svh, 140px); justify-content: safe center; overflow-y: auto; overflow-x: hidden; }
 
 /* ---- question card ---- */
 .q-anim {
@@ -283,6 +291,7 @@ button { font: inherit; }
   font-family: var(--haptik);
   font-weight: 700;
   font-size: 17px;
+  text-align: left;
   transition: transform 0.3s var(--ease), background 0.2s;
 }
 .pill-opt:hover { transform: scale(1.03); }
@@ -539,13 +548,13 @@ button { font: inherit; }
   width: 92%;
   font-family: var(--haptik);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: min(1rem, 3.7vw); /* the gag placeholder must fit uncropped on phones */
   text-align: center;
   background: var(--white);
   transition: background-color 0.35s var(--ease);
   outline: none;
 }
-.fb-input::placeholder { color: var(--black); opacity: 0; transition: opacity 0.35s var(--ease); }
+.fb-input::placeholder { color: var(--black); opacity: 0; transition: opacity 0.35s var(--ease); font-size: min(0.85rem, 3vw); }
 .fb-input:focus { background-color: #facf85; }
 .fb-input:focus::placeholder { opacity: 1; }
 
@@ -657,32 +666,6 @@ button { font: inherit; }
 }
 .zebra-media { position: relative; width: 100%; }
 
-/* ---- end screen ---- */
-.end-heading {
-  font-family: var(--mohr);
-  font-weight: 900;
-  font-style: italic;
-  text-transform: uppercase;
-  color: var(--white);
-  font-size: 2rem;
-  text-align: center;
-  line-height: 1.05;
-}
-.end-form { display: flex; flex-flow: column; align-items: center; gap: 12px; width: min(340px, 90%); }
-.end-input {
-  border: 2px solid var(--black);
-  border-radius: 100px;
-  padding: 12px 18px;
-  width: 100%;
-  font-family: var(--haptik);
-  font-size: 1rem;
-  text-align: center;
-}
-.end-small { color: var(--white); text-align: center; font-size: 0.72rem; line-height: 1.5; opacity: 0.85; }
-.end-serious { color: var(--white); text-align: center; font-weight: 700; font-size: 0.95rem; }
-.end-serious a, .end-small a { color: var(--white); }
-.end-sent { color: var(--white); font-weight: 700; text-align: center; }
-
 /* ---- shared keyframes ---- */
 @keyframes fade { from { opacity: 0; } }
 @keyframes rise {
@@ -702,9 +685,27 @@ button { font: inherit; }
   .qs-btn-circle.big { width: 150px; height: 150px; }
 }
 
+/* short screens: compress the quiz stage so the answers stay on screen
+   (the stage still scrolls as a last resort on extreme viewports) */
+@media (max-height: 700px) {
+  .stage.is-quiz { padding-top: 96px; gap: 14px; }
+  .stage.is-quiz .question-card { padding: 20px; gap: 18px; }
+  .stage.is-quiz .question-card.is-flush { padding-bottom: 0; gap: 24px; }
+  .stage.is-quiz .question-card.is-flush .card-img { max-height: min(30svh, 240px); }
+  .stage.is-quiz .card-img { max-height: min(26svh, 200px); }
+  .stage.is-quiz .card-text { font-size: min(20px, 5.2vw); }
+  .qs-btn-circle.big { width: min(160px, 24svh); height: min(160px, 24svh); font-size: min(24px, 3.4svh); }
+  .qs-btn-circle.small { width: min(54px, 9svh); height: min(54px, 9svh); }
+}
+
 @media (max-width: 480px) {
   .fb-heading { font-size: 40px; }
   .fb-heading-sub { font-size: 44px; }
+  /* keep air between the serious note and the smallprint */
+  .end-serious { bottom: max(13.5svh, 96px); }
+  .end-small { bottom: 2.2svh; }
+  /* stop the trumpet card elongating past the pinned continue button */
+  .feedback.trumpet .fb-body { font-size: min(22px, 5.9vw); }
 }
 
 @media (prefers-reduced-motion: reduce) {

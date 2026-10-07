@@ -1,7 +1,7 @@
 <svg width="90" height="187" viewBox="0 0 90 187" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g transform="translate(12 0) skewX(-7)">
-  <rect x="27" y="160" width="18.2" height="27" fill="#939393"/>
-  <rect x="36.7" y="160" width="4.2" height="27" fill="#c8c8c8"/>
+  <rect x="27" y="140" width="18.2" height="47" fill="#939393"/>
+  <rect x="36.7" y="140" width="4.2" height="47" fill="#c8c8c8"/>
   <rect x="7.46" y="2.46" width="56.2" height="155.6" rx="30.6" fill="#2d2d2c" stroke="#3d4849" stroke-width="4.92"/>
   <g transform="translate(5 0)"><path id="Exclude" d="M30.5742 0C47.4596 8.43308e-05 61.1479 13.7559 61.1479 30.7244V35.6622C61.1479 18.6937 47.4596 4.93785 30.5742 4.93777C13.6886 4.93777 0 18.6936 0 35.6622V30.7244C0 13.7559 13.6886 0 30.5742 0Z" fill="black"/></g>
   <g transform="translate(13.6 13.6)"><g id="Group 632904">

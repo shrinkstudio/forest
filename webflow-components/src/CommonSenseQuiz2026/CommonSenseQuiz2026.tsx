@@ -89,7 +89,10 @@ export function CommonSenseQuiz2026({
   const [sent, setSent] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  const styles = useMemo(() => css.replace('__BG__', ASSETS.bgDesk), []);
+  const styles = useMemo(
+    () => css.replace('__BG__', ASSETS.bgDesk).replace('__BGM__', ASSETS.bgPhone),
+    []
+  );
   const question = QUESTIONS[current];
 
   function pick(correct: boolean | undefined) {
@@ -107,7 +110,7 @@ export function CommonSenseQuiz2026({
   // warm the video cache once the quiz starts so feedback clips play instantly
   useEffect(() => {
     if (phase !== 'quiz') return;
-    [ASSETS.zebraCorrectVideo, ASSETS.zebraWrongVideo, ASSETS.ferdiVideo].forEach((src) => {
+    [ASSETS.zebraCorrectVideo, ASSETS.zebraWrongVideo, ASSETS.ferdiVideo, ASSETS.roadmanVideo].forEach((src) => {
       if (src) fetch(src).catch(() => {});
     });
   }, [phase]);
@@ -128,9 +131,23 @@ export function CommonSenseQuiz2026({
     if (phase !== 'passed' || !stageRef.current) return;
     const host = stageRef.current;
     confettiRain(host, 70);
+    if (!muted) playAudio(ASSETS.cheerAudio);
     const iv = window.setInterval(() => confettiRain(host, 16), 3000);
     return () => window.clearInterval(iv);
   }, [phase]);
+
+  function toot() {
+    if (!muted) playAudio(ASSETS.trumpetAudio, trumpetToot);
+    setTooting(true);
+    window.setTimeout(() => setTooting(false), 650);
+  }
+
+  // the trumpet announces itself once when the correct screen opens
+  useEffect(() => {
+    if (stage !== 'right' || question.right.flair !== 'trumpet') return;
+    const t = window.setTimeout(toot, 600);
+    return () => window.clearTimeout(t);
+  }, [stage]);
 
   function advance() {
     setFbClosing(true);
@@ -180,11 +197,7 @@ export function CommonSenseQuiz2026({
               <button
                 className={'trumpet' + (tooting ? ' tooting' : '')}
                 aria-label="Tap the tiny trumpet"
-                onClick={() => {
-                  if (!muted) playAudio(ASSETS.trumpetAudio, trumpetToot);
-                  setTooting(true);
-                  window.setTimeout(() => setTooting(false), 650);
-                }}
+                onClick={toot}
               >
                 <img className="trumpet-img" src={ASSETS.trumpetImg} alt="" />
                 <img className="trumpet-waves" src={ASSETS.trumpetWaves} alt="" />
@@ -269,7 +282,7 @@ export function CommonSenseQuiz2026({
 
       {phase === 'quiz' && (
         <>
-        <div className="stage">
+        <div className="stage is-quiz">
           <button
             className="mute-btn"
             onClick={() => setMuted((m) => !m)}
