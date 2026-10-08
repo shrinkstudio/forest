@@ -548,15 +548,21 @@ button { font: inherit; }
   width: 92%;
   font-family: var(--haptik);
   font-weight: 700;
-  font-size: min(1rem, 3.7vw); /* the gag placeholder must fit uncropped on phones */
   text-align: center;
   background: var(--white);
   transition: background-color 0.35s var(--ease);
   outline: none;
+  cursor: pointer;
+  min-height: 42px;
 }
-.fb-input::placeholder { color: var(--black); opacity: 0; transition: opacity 0.35s var(--ease); font-size: min(0.85rem, 3vw); }
-.fb-input:focus { background-color: #facf85; }
-.fb-input:focus::placeholder { opacity: 1; }
+.fb-input .gag-msg {
+  color: var(--black);
+  font-size: min(0.85rem, 3vw); /* the gag line must fit uncropped on phones */
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.fb-input.is-gagged { background-color: #facf85; }
+.fb-input.is-gagged .gag-msg { opacity: 1; }
 
 /* confetti + spiral (banned flair) */
 .confetti-piece {
@@ -704,8 +710,9 @@ button { font: inherit; }
   /* keep air between the serious note and the smallprint */
   .end-serious { bottom: max(13.5svh, 96px); }
   .end-small { bottom: 2.2svh; }
-  /* stop the trumpet card elongating past the pinned continue button */
-  .feedback.trumpet .fb-body { font-size: min(22px, 5.9vw); }
+  /* stop the trumpet card elongating past the pinned continue button,
+     and let the line breathe so it wraps 3-4 lines, not word-per-line */
+  .feedback.trumpet .fb-body { font-size: min(22px, 5.9vw); max-width: 96%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -54,7 +54,7 @@ export interface CommonSenseQuiz2026Props {
 type Phase = 'splash' | 'intro' | 'quiz' | 'passed';
 type Stage = 'ask' | 'right' | 'wrong';
 
-const SPLASH_MS = 2200;
+const SPLASH_MS = 3200;
 
 const ARROW = (
   <svg className="arrow" viewBox="0 0 144 68" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,6 +87,8 @@ export function CommonSenseQuiz2026({
   const [muted, setMuted] = useState(false);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  const [gagged, setGagged] = useState(false); // banned-screen joke "input"
+  const gagTimer = useRef<number>();
   const stageRef = useRef<HTMLDivElement>(null);
 
   const styles = useMemo(
@@ -212,14 +214,19 @@ export function CommonSenseQuiz2026({
               You’re banned!<span className="sup">*</span>
             </div>
             <div className="fb-body is-haptik">{fb.body}</div>
-            <input
-              className="fb-input"
-              type="text"
-              readOnly
-              inputMode="none"
-              placeholder="this isn’t real stop pressing it"
+            {/* a button so iOS never tries to focus/scroll a form field */}
+            <button
+              type="button"
+              className={'fb-input' + (gagged ? ' is-gagged' : '')}
               aria-label="Not a real email field"
-            />
+              onClick={() => {
+                setGagged(true);
+                window.clearTimeout(gagTimer.current);
+                gagTimer.current = window.setTimeout(() => setGagged(false), 1600);
+              }}
+            >
+              <span className="gag-msg">this isn’t real stop pressing it</span>
+            </button>
             <div className="fb-note">*ur not actually banned, just try again.</div>
           </>
         )}

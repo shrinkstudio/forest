@@ -34,8 +34,8 @@ export const ASSETS = {
   zebraAngry: `${ASSET_BASE}/zebra-angry.png`,
   /* PLACEHOLDERS — still to export from Figma: */
   zebraWink: '', // winking zebra face (correct, frame 2)
-  cycleLane: `${ASSET_BASE}/cycle-lane.png`, // Q3 option A
-  pavementCar: `${ASSET_BASE}/pavement-crash.png`, // Q3 option B (Ferdi still)
+  cycleLane: `${ASSET_BASE}/cycle-lane.jpg`, // Q3 option A
+  pavementCar: `${ASSET_BASE}/pavement-crash.jpg`, // Q3 option B (Ferdi still)
   trumpet: '', // tiny trumpet image (emoji fallback used when empty)
   /* final audio + video (local preview paths; re-host + compress before publish) */
   cheerAudio: `${ASSET_BASE}/cheer.m4a`,
