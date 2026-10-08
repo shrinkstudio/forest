@@ -44,9 +44,9 @@ button { font: inherit; }
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* phone sticker pack (its own frame, not a crop of the desktop one) */
+/* phones: flat green behind every stage (the sticker pack lives on the splash art) */
 @media (max-width: 767px) {
-  .csq26 { background-image: url("__BGM__"); }
+  .csq26 { background-image: none; background-color: var(--stage-green); }
 }
 
 .stage {

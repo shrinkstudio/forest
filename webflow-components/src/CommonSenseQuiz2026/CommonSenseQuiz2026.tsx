@@ -91,10 +91,7 @@ export function CommonSenseQuiz2026({
   const gagTimer = useRef<number>();
   const stageRef = useRef<HTMLDivElement>(null);
 
-  const styles = useMemo(
-    () => css.replace('__BG__', ASSETS.bgDesk).replace('__BGM__', ASSETS.bgPhone),
-    []
-  );
+  const styles = useMemo(() => css.replace('__BG__', ASSETS.bgDesk), []);
   const question = QUESTIONS[current];
 
   function pick(correct: boolean | undefined) {
@@ -109,7 +106,14 @@ export function CommonSenseQuiz2026({
     }
   }
 
-  // warm the video cache once the quiz starts so feedback clips play instantly
+  // warm the image cache while the intro is on screen (question stills, trumpet,
+  // end sticker), then the video cache once the quiz starts
+  useEffect(() => {
+    if (phase !== 'intro') return;
+    [ASSETS.zebraStill, ASSETS.cycleLane, ASSETS.pavementCar, ASSETS.trumpetImg, ASSETS.endImg].forEach((src) => {
+      if (src) new Image().src = src;
+    });
+  }, [phase]);
   useEffect(() => {
     if (phase !== 'quiz') return;
     [ASSETS.zebraCorrectVideo, ASSETS.zebraWrongVideo, ASSETS.ferdiVideo, ASSETS.roadmanVideo].forEach((src) => {
@@ -389,7 +393,22 @@ export function CommonSenseQuiz2026({
           >
             <img className="snd" src={muted ? ASSETS.soundOff : ASSETS.soundOn} alt="" />
           </button>
-          <img className="end-sticker" src={ASSETS.endImg} alt="You have common sense!" />
+          <img
+            className="end-sticker"
+            src={ASSETS.endImg}
+            alt="You have common sense!"
+            onError={(e) => {
+              /* flaky mobile networks: retry a couple of times instead of staying blank */
+              const img = e.currentTarget;
+              const tries = Number(img.dataset.retries || 0);
+              if (tries < 2) {
+                img.dataset.retries = String(tries + 1);
+                window.setTimeout(() => {
+                  img.src = `${ASSETS.endImg}?retry=${tries + 1}`;
+                }, 1200 * (tries + 1));
+              }
+            }}
+          />
           {!sent ? (
             <form className="end-form" onSubmit={submitEmail}>
               <p className="end-copy">

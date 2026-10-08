@@ -15,7 +15,6 @@ const ASSET_BASE =
 export const ASSETS = {
   /* 2026 sticker packs (client exports, rasters recompressed locally) */
   bgDesk: `${ASSET_BASE}/bg-desk.svg`,
-  bgPhone: `${ASSET_BASE}/bg-phone.svg`, // dedicated phone sticker pack (<768px)
   splashFull: `${ASSET_BASE}/splash-full.svg`, // entire splash frame (mobile)
   splashCluster: `${ASSET_BASE}/splash-forest.svg`, // sticker + forest pill (desktop/tablet)
   /* intro/outro clusters with the forest pill below (client exports) */
