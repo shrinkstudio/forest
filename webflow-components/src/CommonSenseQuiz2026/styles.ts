@@ -345,7 +345,8 @@ button { font: inherit; }
 .stage.is-end > *:nth-child(4) { animation-delay: 0.16s; }
 .end-sticker { width: min(84%, 340px); margin: 0 auto; }
 /* typeform claim widget (styles can't pierce the shadow root, so size it here) */
-.end-tf { width: min(94%, 440px); height: min(42svh, 400px); margin: 4svh auto 0; }
+/* kept short so the widget's button never bunches against the serious note */
+.end-tf { width: min(94%, 440px); height: min(37svh, 350px); margin: 3svh auto 0; }
 .end-tf .tf-v1-widget-close { display: none; }
 .end-tf .tf-v1-widget,
 .end-tf .tf-v1-widget iframe {
