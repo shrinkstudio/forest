@@ -16,9 +16,10 @@ export const ASSETS = {
   /* 2026 sticker packs (client exports, rasters recompressed locally) */
   bgDesk: `${ASSET_BASE}/bg-desk.svg`,
   splashFull: `${ASSET_BASE}/splash-full.svg`, // entire splash frame (mobile)
-  splashCluster: `${ASSET_BASE}/splash-forest.svg`, // sticker + forest pill (desktop/tablet)
+  /* flattened holo renders (iOS rasterises SVG pattern fills badly) */
+  splashCluster: `${ASSET_BASE}/do-you-have-cs.png`, // sticker + forest pill (desktop/tablet)
   /* intro/outro clusters with the forest pill below (client exports) */
-  csClub: `${ASSET_BASE}/do-you-have-cs.svg`,
+  csClub: `${ASSET_BASE}/do-you-have-cs.png`,
   endImg: `${ASSET_BASE}/you-have-cs.svg`,
   trafficLight: `${ASSET_BASE}/traffic-light.svg`, // composed from Q1-Forest parts
   soundOn: `${ASSET_BASE}/sound-on.svg`, // client-supplied
@@ -39,7 +40,7 @@ export const ASSETS = {
   /* final audio + video (local preview paths; re-host + compress before publish) */
   cheerAudio: `${ASSET_BASE}/cheer.m4a`,
   trumpetAudio: `${ASSET_BASE}/trumpet.mp3`,
-  get30Sticker: `${ASSET_BASE}/get-30-mins.svg`,
+  get30Sticker: `${ASSET_BASE}/get-30-mins.png`,
   zebraCorrectVideo: `${ASSET_BASE}/zebra-correct.mp4`,
   zebraWrongVideo: `${ASSET_BASE}/zebra-wrong.mp4`,
   ferdiVideo: `${ASSET_BASE}/ferdi.mp4`,
