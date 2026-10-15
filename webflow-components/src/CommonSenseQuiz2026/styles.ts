@@ -344,6 +344,16 @@ button { font: inherit; }
 .stage.is-end > *:nth-child(3) { animation-delay: 0.08s; }
 .stage.is-end > *:nth-child(4) { animation-delay: 0.16s; }
 .end-sticker { width: min(84%, 340px); margin: 0 auto; }
+/* typeform claim widget (styles can't pierce the shadow root, so size it here) */
+.end-tf { width: min(94%, 440px); height: min(42svh, 400px); margin: 4svh auto 0; }
+.end-tf .tf-v1-widget-close { display: none; }
+.end-tf .tf-v1-widget,
+.end-tf .tf-v1-widget iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 16px;
+}
 .end-form { display: flex; flex-flow: column; align-items: center; width: 100%; margin-top: 13.5svh; }
 .end-copy {
   color: var(--white);

@@ -45,8 +45,8 @@ function playAudio(src: string, fallback?: () => void) {
 }
 
 export interface CommonSenseQuiz2026Props {
-  /** Where the claim form POSTs { email }. Empty = demo mode (fake success). */
-  emailEndpoint?: string;
+  /** Typeform form id for the claim step (name + email + consent live there). */
+  typeformId?: string;
   seriousUrl?: string;
   termsUrl?: string;
 }
@@ -74,7 +74,7 @@ function Media({ src, label, className }: { src?: string; label: string; classNa
 }
 
 export function CommonSenseQuiz2026({
-  emailEndpoint = '',
+  typeformId = 'S9ha6xGg',
   seriousUrl = 'https://www.forest.me/post/forest-common-sense-club',
   termsUrl = 'https://help.forest.me/en/articles/652-forest-common-sense-club-terms-and-conditions',
 }: CommonSenseQuiz2026Props) {
@@ -85,11 +85,10 @@ export function CommonSenseQuiz2026({
   const [fbClosing, setFbClosing] = useState(false); // overlay exit animation
   const [tooting, setTooting] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
   const [gagged, setGagged] = useState(false); // banned-screen joke "input"
   const gagTimer = useRef<number>();
   const stageRef = useRef<HTMLDivElement>(null);
+  const claimRef = useRef<HTMLDivElement>(null);
 
   const styles = useMemo(() => css.replace('__BG__', ASSETS.bgDesk), []);
   const question = QUESTIONS[current];
@@ -173,22 +172,31 @@ export function CommonSenseQuiz2026({
     }, 240);
   }
 
-  async function submitEmail(e: React.FormEvent) {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    if (emailEndpoint) {
-      try {
-        await fetch(emailEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-      } catch {
-        /* still confirm; endpoint wiring is a launch task */
+  // the claim form is the client's Typeform (name + email + consent checkbox);
+  // its embed lib takes a container element, so it works inside the shadow root
+  useEffect(() => {
+    if (phase !== 'passed' || !claimRef.current) return;
+    const container = claimRef.current;
+    const mount = () => {
+      const tf = (window as any).tf;
+      if (tf?.createWidget && !container.childElementCount) {
+        tf.createWidget(typeformId, { container, hideHeaders: true, hideFooters: true, opacity: 0 });
       }
+    };
+    if ((window as any).tf) {
+      mount();
+      return;
     }
-    setSent(true);
-  }
+    let script = document.getElementById('typeform-embed-js') as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'typeform-embed-js';
+      script.src = 'https://embed.typeform.com/next/embed.js';
+      document.head.appendChild(script);
+    }
+    script.addEventListener('load', mount);
+    return () => script?.removeEventListener('load', mount);
+  }, [phase, typeformId]);
 
   function renderFeedback(fb: Feedback26, isRight: boolean) {
     return (
@@ -308,7 +316,14 @@ export function CommonSenseQuiz2026({
             <div className="loading-bar">
               <div
                 className="progress-bar"
-                style={{ width: `${((current + 1) / QUESTION_COUNT) * 100}%` }}
+                /* the bar never reads "done" while a question is pending: the
+                   final question leaves a white notch at the end */
+                style={{
+                  width:
+                    current + 1 === QUESTION_COUNT
+                      ? 'calc(100% - 48px)'
+                      : `${((current + 1) / QUESTION_COUNT) * 100}%`,
+                }}
               />
             </div>
           </div>
@@ -409,26 +424,7 @@ export function CommonSenseQuiz2026({
               }
             }}
           />
-          {!sent ? (
-            <form className="end-form" onSubmit={submitEmail}>
-              <p className="end-copy">
-                Enter your email address
-                <br />
-                to claim <b>30 free minutes<span className="sup">*</span>:</b>
-              </p>
-              <input
-                className="end-input"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label="Email address"
-              />
-              <button className="end-send" type="submit">Send</button>
-            </form>
-          ) : (
-            <p className="end-sent">Nice one. Check your inbox for your 30 free minutes.</p>
-          )}
+          <div className="end-tf" ref={claimRef} />
           <p className="end-serious">
             Jokes aside, there are serious consequences to your actions on the road.
             <br />
