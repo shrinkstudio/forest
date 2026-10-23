@@ -4,7 +4,7 @@
  * email claim on the pass screen. Content in quiz.ts, styles in styles.ts,
  * placeholder sounds in sounds.ts. Shadow-DOM component.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { css } from './styles';
 import { ASSETS, QUESTIONS, QUESTION_COUNT, type Feedback26 } from './quiz';
 import { trumpetToot } from './sounds';
@@ -56,6 +56,14 @@ type Stage = 'ask' | 'right' | 'wrong';
 
 const SPLASH_MS = 3200;
 
+/* Bot signals for the claim step. Real people take time to read each question
+   and click with genuine (isTrusted) events; scripts answer near-instantly or
+   dispatch synthetic clicks. Thresholds are deliberately loose so a fast human
+   is never flagged. The result rides into the Typeform as hidden fields, where
+   Braze gates the code email on it. */
+const MIN_ANSWER_MS = 300; // quicker than this on any question is not a human
+const MIN_QUIZ_MS = 3000; // three questions + feedback screens in under 3s
+
 const ARROW = (
   <svg className="arrow" viewBox="0 0 144 68" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -89,11 +97,17 @@ export function CommonSenseQuiz2026({
   const gagTimer = useRef<number>();
   const stageRef = useRef<HTMLDivElement>(null);
   const claimRef = useRef<HTMLDivElement>(null);
+  const quizStartedAt = useRef(0);
+  const askedAt = useRef(0);
+  const signals = useRef({ fastestMs: Infinity, untrusted: 0 });
 
   const styles = useMemo(() => css.replace('__BG__', ASSETS.bgDesk), []);
   const question = QUESTIONS[current];
 
-  function pick(correct: boolean | undefined) {
+  function pick(correct: boolean | undefined, e: MouseEvent) {
+    const s = signals.current;
+    s.fastestMs = Math.min(s.fastestMs, performance.now() - askedAt.current);
+    if (!e.isTrusted) s.untrusted++;
     if (correct) {
       setStage('right');
     } else {
@@ -119,6 +133,13 @@ export function CommonSenseQuiz2026({
       if (src) fetch(src).catch(() => {});
     });
   }, [phase]);
+
+  // answer timing starts when a question (or its retry) is on screen
+  useEffect(() => {
+    if (phase !== 'quiz' || stage !== 'ask') return;
+    askedAt.current = performance.now();
+    if (!quizStartedAt.current) quizStartedAt.current = askedAt.current;
+  }, [phase, stage, current]);
 
   // splash: branding beat, then the start slide (mimics last year's flow)
   useEffect(() => {
@@ -173,14 +194,23 @@ export function CommonSenseQuiz2026({
   }
 
   // the claim form is the client's Typeform (name + email + consent checkbox);
-  // its embed lib takes a container element, so it works inside the shadow root
+  // its embed lib takes a container element, so it works inside the shadow root.
+  // Hidden fields mark the submission as a real quiz completion; anything that
+  // reaches the Typeform directly arrives without them.
   useEffect(() => {
     if (phase !== 'passed' || !claimRef.current) return;
     const container = claimRef.current;
+    const quizMs = performance.now() - quizStartedAt.current;
+    const { fastestMs, untrusted } = signals.current;
+    const hidden = {
+      quiz_completed: 'true',
+      time_taken: String(Math.round(quizMs / 1000)),
+      suspected_bot: String(untrusted > 0 || fastestMs < MIN_ANSWER_MS || quizMs < MIN_QUIZ_MS),
+    };
     const mount = () => {
       const tf = (window as any).tf;
       if (tf?.createWidget && !container.childElementCount) {
-        tf.createWidget(typeformId, { container, hideHeaders: true, hideFooters: true, opacity: 0 });
+        tf.createWidget(typeformId, { container, hidden, hideHeaders: true, hideFooters: true, opacity: 0 });
       }
     };
     if ((window as any).tf) {
@@ -339,7 +369,7 @@ export function CommonSenseQuiz2026({
                   {pills.length > 0 && (
                     <div className="pill-options">
                       {pills.map((o) => (
-                        <button key={o.letter} className="pill-opt" onClick={() => pick(o.correct)}>
+                        <button key={o.letter} className="pill-opt" onClick={(e) => pick(o.correct, e)}>
                           <span className="letter">{o.letter}</span>
                           {o.label}
                         </button>
@@ -349,7 +379,7 @@ export function CommonSenseQuiz2026({
                   {images.length > 0 && (
                     <div className="img-options">
                       {images.map((o) => (
-                        <div key={o.letter} className="img-opt" onClick={() => pick(o.correct)}>
+                        <div key={o.letter} className="img-opt" onClick={(e) => pick(o.correct, e)}>
                           <div className="frame">
                             <Media src={o.img} label={`[option ${o.letter} photo]`} className="" />
                           </div>
@@ -368,7 +398,7 @@ export function CommonSenseQuiz2026({
                   <div
                     key={o.label}
                     className={`qs-btn-circle ${o.color} ${o.size}`}
-                    onClick={() => pick(o.correct)}
+                    onClick={(e) => pick(o.correct, e)}
                   >
                     {o.label}
                   </div>
