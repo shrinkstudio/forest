@@ -86,7 +86,7 @@ function Media({ src, label, className }: { src?: string; label: string; classNa
 
 export function CommonSenseQuiz2026({
   typeformId = 'S9ha6xGg',
-  seriousUrl = 'https://www.forest.me/post/forest-common-sense-club',
+  seriousUrl = 'https://forest.bike/blog/forest-common-sense-club',
   termsUrl = 'https://help.forest.me/en/articles/652-forest-common-sense-club-terms-and-conditions',
 }: CommonSenseQuiz2026Props) {
   const [phase, setPhase] = useState<Phase>('splash');
@@ -103,6 +103,9 @@ export function CommonSenseQuiz2026({
   const quizStartedAt = useRef(0);
   const askedAt = useRef(0);
   const signals = useRef({ fastestMs: Infinity, untrusted: 0 });
+  const questionRef = useRef<HTMLDivElement>(null);
+  const fbBtnRef = useRef<HTMLButtonElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
 
   const styles = useMemo(() => css.replace('__BG__', ASSETS.bgDesk), []);
   const question = QUESTIONS[current];
@@ -136,6 +139,20 @@ export function CommonSenseQuiz2026({
       if (src) fetch(src).catch(() => {});
     });
   }, [phase]);
+
+  // keyboard / screen reader flow: focus follows the screen that just opened —
+  // the question heading, the feedback's continue button, then the end slide
+  useEffect(() => {
+    const target =
+      phase === 'passed'
+        ? endRef.current
+        : phase === 'quiz'
+          ? stage === 'ask'
+            ? questionRef.current
+            : fbBtnRef.current
+          : null;
+    target?.focus({ preventScroll: true });
+  }, [phase, stage, current]);
 
   // answer timing starts when a question (or its retry) is on screen
   useEffect(() => {
@@ -308,6 +325,13 @@ export function CommonSenseQuiz2026({
   return (
     <div className="csq26" ref={stageRef}>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
+      <h1 className="sr-only">Forest Common Sense Quiz</h1>
+      {/* announces right/wrong; rendered up front so the change is picked up */}
+      <div className="sr-only" role="status" aria-live="polite">
+        {phase === 'quiz' && stage !== 'ask'
+          ? `${(stage === 'right' ? question.right : question.wrong).heading}. ${(stage === 'right' ? question.right : question.wrong).body}`
+          : ''}
+      </div>
 
       {phase === 'splash' && (
         <div className={'stage is-entry is-splash' + (splashLeaving ? ' is-leaving' : '')}>
@@ -373,7 +397,15 @@ export function CommonSenseQuiz2026({
             <div className={'question-card' + (circles.length ? ' is-flush' : '')}>
               {(
                 <>
-                  <div className={'card-text' + (question.prompt.length > 70 ? ' is-long' : '')}>{question.prompt}</div>
+                  <div
+                    ref={questionRef}
+                    className={'card-text' + (question.prompt.length > 70 ? ' is-long' : '')}
+                    role="heading"
+                    aria-level={2}
+                    tabIndex={-1}
+                  >
+                    {question.prompt}
+                  </div>
                   {question.img !== undefined && (
                     <Media src={question.img} label="[question photo — export from Figma]" />
                   )}
@@ -390,12 +422,18 @@ export function CommonSenseQuiz2026({
                   {images.length > 0 && (
                     <div className="img-options">
                       {images.map((o) => (
-                        <div key={o.letter} className="img-opt" onClick={(e) => pick(o.correct, e)}>
+                        <button
+                          key={o.letter}
+                          type="button"
+                          className="img-opt"
+                          aria-label={`${o.letter}: ${o.label}`}
+                          onClick={(e) => pick(o.correct, e)}
+                        >
                           <div className="frame">
                             <Media src={o.img} label={`[option ${o.letter} photo]`} className="" />
                           </div>
                           <div className="letter">{o.letter}</div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
@@ -406,13 +444,14 @@ export function CommonSenseQuiz2026({
             {showAnswersOutside && (
               <div className="question-buttons">
                 {circles.map((o) => (
-                  <div
+                  <button
                     key={o.label}
+                    type="button"
                     className={`qs-btn-circle ${o.color} ${o.size}`}
                     onClick={(e) => pick(o.correct, e)}
                   >
                     {o.label}
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -427,6 +466,7 @@ export function CommonSenseQuiz2026({
                 {renderFeedback(stage === 'right' ? question.right : question.wrong, stage === 'right')}
               </div>
               <button
+                ref={fbBtnRef}
                 className={
                   'fb-btn is-screen-bottom' +
                   (stage === 'wrong' ? ' is-amber' : '')
@@ -441,7 +481,7 @@ export function CommonSenseQuiz2026({
       )}
 
       {phase === 'passed' && (
-        <div className="stage is-end">
+        <div className="stage is-end" ref={endRef} tabIndex={-1}>
           <button
             className="mute-btn"
             onClick={() => setMuted((m) => !m)}

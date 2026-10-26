@@ -14,7 +14,7 @@ export default declareComponent(CommonSenseQuiz2026, {
     }),
     seriousUrl: props.Text({
       name: '"Find out more" link',
-      defaultValue: 'https://www.forest.me/post/forest-common-sense-club',
+      defaultValue: 'https://forest.bike/blog/forest-common-sense-club',
     }),
     termsUrl: props.Text({
       name: 'T&Cs link',

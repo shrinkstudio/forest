@@ -48,6 +48,7 @@ export const ASSETS = {
 } as const;
 
 export interface Option26 {
+  /** visible text for circles/pills; the accessible name for image cards */
   label: string;
   /** circle YES/NO, lettered pill, or A/B image card */
   kind: 'circle' | 'pill' | 'image';
@@ -133,8 +134,8 @@ export const QUESTIONS: Question26[] = [
   {
     prompt: 'Which of these are you legally allowed to cycle on?',
     options: [
-      { kind: 'image', letter: 'A', label: '', img: ASSETS.cycleLane, correct: true },
-      { kind: 'image', letter: 'B', label: '', img: ASSETS.pavementCar },
+      { kind: 'image', letter: 'A', label: 'A cycle lane', img: ASSETS.cycleLane, correct: true },
+      { kind: 'image', letter: 'B', label: 'The pavement', img: ASSETS.pavementCar },
     ],
     /* final layout: Q3 has bespoke screens now */
     right: {

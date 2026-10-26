@@ -9,6 +9,13 @@ export const css = `
 * { box-sizing: border-box; margin: 0; padding: 0; }
 img { max-width: 100%; display: block; }
 button { font: inherit; }
+/* keyboard focus: white ring inside a black one, visible on every stage colour */
+button:focus-visible { outline: 2px solid #000; outline-offset: 2px; box-shadow: 0 0 0 2px #fff; }
+[tabindex="-1"]:focus { outline: none; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
 
 .csq26 {
   --black: #1d1c1a;
@@ -310,7 +317,11 @@ button { font: inherit; }
 }
 
 .img-options { display: flex; flex-flow: column; gap: 26px; width: 100%; }
-.img-opt { position: relative; cursor: pointer; transition: transform 0.3s var(--ease); }
+.img-opt {
+  position: relative; display: block; width: 100%;
+  background: none; border: 0; border-radius: 16.5px; color: inherit; text-align: inherit;
+  cursor: pointer; transition: transform 0.3s var(--ease);
+}
 .img-opt:hover { transform: translateY(-4px) scale(1.015); }
 .img-opt:active { transform: scale(0.97); }
 .img-opt .frame { border-radius: 16.5px; border: 1px solid #000; overflow: hidden; }
