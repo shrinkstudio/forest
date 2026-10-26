@@ -2,6 +2,20 @@
 
 All notable changes to the Forest Webflow bundle. Dates are commit dates.
 
+## v1.1.0 — 2026-10-26
+
+Slider fixes. Only `slider.js` changed since v1.0.0.
+
+### Fixes
+
+- **Sliders no longer clip their content.** The slider pinned its height on first measure and could never grow past it, because slides stretch to the pinned height. Sliders that start hidden (inside a tab pane) or before lazy images load stayed collapsed, cutting cards off, e.g. both Sign Up Process sliders on `/partnerships/cycle-to-work`. The pin is now released before every re-measure.
+- **Nested Collection Lists inside slides keep their layout.** Only the top-level Collection List feeding the slides is flattened.
+
+### Deploy
+
+- Re-vendor `dist/index.min.js` at this tag and point the Webflow head at the new file
+- Bundle SHA256 at this tag: `baab8ee0a83b143df88c6c4651de0c4629ba654d5760bcd822470628f67cd894`
+
 ## v1.0.0 — 2026-06-15
 
 Launch baseline. forest.me + partnerships.forest.me merged onto forest.bike on a single Webflow build.
