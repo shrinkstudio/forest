@@ -61,6 +61,25 @@
         }
       },
       "path": "./CommonSenseQuiz"
+    },
+    {
+      "id": "_ForestTools:CommonSenseQuiz2026",
+      "name": "CommonSenseQuiz2026",
+      "assets": {
+        "js": {
+          "sync": [
+            "319.js",
+            "357.js",
+            "__federation_expose_CommonSenseQuiz2026.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./CommonSenseQuiz2026"
     }
   ]
 }
