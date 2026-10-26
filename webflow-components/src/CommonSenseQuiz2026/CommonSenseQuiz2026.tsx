@@ -64,6 +64,9 @@ const SPLASH_MS = 3200;
 const MIN_ANSWER_MS = 300; // quicker than this on any question is not a human
 const MIN_QUIZ_MS = 3000; // three questions + feedback screens in under 3s
 
+/* hidden fields on the claim Typeform that mirror the page URL */
+const UTM_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+
 const ARROW = (
   <svg className="arrow" viewBox="0 0 144 68" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -210,7 +213,15 @@ export function CommonSenseQuiz2026({
     const mount = () => {
       const tf = (window as any).tf;
       if (tf?.createWidget && !container.childElementCount) {
-        tf.createWidget(typeformId, { container, hidden, hideHeaders: true, hideFooters: true, opacity: 0 });
+        tf.createWidget(typeformId, {
+          container,
+          hidden,
+          // the page's UTMs, so quiz entries keep their campaign attribution
+          transitiveSearchParams: UTM_PARAMS,
+          hideHeaders: true,
+          hideFooters: true,
+          opacity: 0,
+        });
       }
     };
     if ((window as any).tf) {
